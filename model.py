@@ -88,6 +88,6 @@ class Model:
         return self.board
 
     def get_player_position(self, player):
-        if player > len(player_positions):
-            raise Error(f"Player {player} not valid in list of {len(player_positions)} players")
-        return player_positions[player]
+        if player > len(self.player_positions):
+            raise Error(f"Player {player} not valid in list of {len(self.player_positions)} players")
+        return self.player_positions[player]
