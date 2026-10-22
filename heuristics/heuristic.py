@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+
+class Heuristic:
+    """
+    The base heuristic class. Does nothing.
+    PLEASE MAKE SURE YOUR HEURISTIC ALGORITHM
+    IMPLEMENTS THIS API. THE MODEL WILL TAKE IN
+    YOUR HEURISTIC AND USE IT TO CARRY OUT ITS MEANS.
+    IF YOU DO NOT IMPLEMENT THE API CORRECTLY,
+    YOU WILL BREAK THE PROGRAM.
+    """
