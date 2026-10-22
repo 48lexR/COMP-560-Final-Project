@@ -45,27 +45,37 @@ class Model:
         pos = self.player_positions[player]
         match direction:
             case 0: # up
-                if pos[0] == 0:
+                if pos[0] == 0 or self.is_obstacle_or_player(pos[0] - 1, pos[1]):
                     return -1
                 pos -= 1
                 return 0
             case 1: # right
-                if pos[1] == len(cols) - 1:
+                if pos[1] == len(cols) - 1 or self.is_obstacle_or_player(pos[0], pos[1] + 1):
                     return -1
                 pos[1] += 1
                 return 0
             case 2: # down
-                if pos[0] == len(rows) - 1:
+                if pos[0] == len(rows) - 1 or self.is_obstacle_or_player(pos[0] + 1, pos[1]):
                     return -1
                 pos += 1
                 return 0
             case 3: # left
-                if pos[1] == 0:
+                if pos[1] == 0 or self.is_obstacle_or_player(pos[0], pos[1] - 1):
                     return -1
                 pos -= 1
                 return 0
             case _:
                 return -1 # Invalid move
+
+    def at_position(self, position: tuple) -> int:
+        if position[0] < 0 or position[0] > self.rows - 1 or position[1] < 0 or position[1] > self.cols - 1:
+            raise Error(f"Invalid position")
+        return self.board[position[0]][position[1]]
+
+    def is_obstacle_or_player(self, position: tuple) -> bool:
+        if position[0] < 0 or position[0] > self.rows - 1 or position[1] < 0 or position[1] > self.cols - 1:
+            raise Error(f"Invalid position")
+        return self.at_position(position) == OBSTACLE or self.at_position(position) == PLAYER
 
     def place_obstacle(self, position: tuple) -> int:
         """Place an obstacle on the board. Returns 0 for success, -1 for invalid placement"""
@@ -73,3 +83,11 @@ class Model:
             return -1
         self.board[position[0]][position[1]] = OBSTACLE
         return 0
+
+    def get_board(self):
+        return self.board
+
+    def get_player_position(self, player):
+        if player > len(player_positions):
+            raise Error(f"Player {player} not valid in list of {len(player_positions)} players")
+        return player_positions[player]
