@@ -19,38 +19,35 @@ class Controller:
     def __init__(self, rows, cols):
         self.rows = rows
         self.cols = cols
-        model = Model(self.rows, self.cols)
+        self.model = Model(self.rows, self.cols)
 
     def __call__(self, heuristic_a, heuristic_b):
         """Simulates a single game between two adversaries, A and B"""
-        # TODO: Implement
         self.state = 0 # initial state
-        Model() # Model state
+        self.model() # Model state
         while self.state == 0:
             # Main gameplay loop
             is_valid = False
             while not is_valid:
-                a = heuristic_a.evaluate(model, 0)
-                is_valid = self.move_helper(1, a)
+                is_valid = self.move_helper(heuristic_a, 0)
 
             if self.player_has_reached_goal(0):
                 self.state = 1
                 print(f"Player 0 has won the game!")
-                return
+                return 0
 
             is_valid = False
             while not is_valid:
-                b = heuristic_b.evaluate(model, 1)
-                is_valid = self.move_helper(1, b)
+                is_valid = self.move_helper(heuristic_b, 1)
 
-            if self.player.has_reached_goal(1):
+            if self.player_has_reached_goal(1):
                 self.state = 1
                 print(f"Player 1 has won the game!")
-                return
+                return 1
 
-    def move_helper(self, heuristic, player, direction):
+    def move_helper(self, heuristic, player):
         """Helper function to do the switch-cases"""
-        a, pos = heuristic_a.evaluate(model, 0)
+        a, pos = heuristic.evaluate(self.model, 0)
         match a:
             case 0:
                 self.model.move(0, 0)
@@ -71,6 +68,6 @@ class Controller:
                 return False
 
     def player_has_reached_goal(self, player) -> bool:
-        if self.model.player_position(0)[0] == self.rows - 1:
+        if self.model.get_player_position(0)[0] == self.rows - 1:
             return True
         return False
