@@ -27,18 +27,16 @@ class Controller:
         self.model() # Model state
         while self.state == 0:
             # Main gameplay loop
-            is_valid = False
-            while not is_valid:
-                is_valid = self.move_helper(heuristic_a, 0)
+            if self.move_helper(heuristic_a, 0) == False:
+                raise Exception("Invalid move")
 
             if self.player_has_reached_goal(0):
                 self.state = 1
                 print(f"Player 0 has won the game!")
                 return 0
 
-            is_valid = False
-            while not is_valid:
-                is_valid = self.move_helper(heuristic_b, 1)
+            if self.move_helper(heuristic_b, 1) == False:
+                raise Exception("Invalid move")
 
             if self.player_has_reached_goal(1):
                 self.state = 1
@@ -47,27 +45,11 @@ class Controller:
 
     def move_helper(self, heuristic, player):
         """Helper function to do the switch-cases"""
-        a, pos = heuristic.evaluate(self.model, 0)
-        match a:
-            case 0:
-                self.model.move(0, 0)
-                return True
-            case 1:
-                self.model.move(0, 1)
-                return True
-            case 2:
-                self.model.move(0, 2)
-                return True
-            case 3:
-                self.model.move(0, 3)
-                return True
-            case 4:
-                self.model.place_obstacle(pos)
-                return True
-            case _:
-                return False
+        a, pos = heuristic.evaluate(self.model, player)
+        if a == PLACE_OBSTACLE:
+            return self.model.place_obstacle(pos) == 0
+        return self.model.move(a, player) == 0
 
     def player_has_reached_goal(self, player) -> bool:
-        if self.model.get_player_position(0)[0] == self.rows - 1:
-            return True
-        return False
+        goal_row = self.rows - 1 if player == 0 else 0
+        return self.model.get_player_position(player)[0] == goal_row

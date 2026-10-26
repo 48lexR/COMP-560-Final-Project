@@ -4,6 +4,12 @@ EMPTY = 0
 PLAYER = 1
 OBSTACLE = 2
 
+UP = 0
+RIGHT = 1
+DOWN = 2
+LEFT = 3
+CREATE_OBSTACLE = 4
+
 class Model:
     """
     The model class for the Quorodor implementation
@@ -22,7 +28,7 @@ class Model:
 
     def __call__(self) -> None:
         """Creates the board and initializes the player positions"""
-        self.board = [[EMPTY] * self.rows] * self.cols # Initialize the board
+        self.board = [[EMPTY] * self.cols for _ in range(self.rows)] # Initialize the board
         self.player_positions = [
             (0, self.cols // 2),
             (self.rows - 1, self.cols // 2)
@@ -39,42 +45,39 @@ class Model:
 
     def move(self, direction, player) -> int:
         """Move a player. Returns 0 on success, -1 on invalid move, -2 on invalid player"""
-        if(player > len(self.player_positions)):
+        if(player < 0 or player >= len(self.player_positions)):
             return -2 # No such player
 
-        pos = self.player_positions[player]
-        match direction:
-            case 0: # up
-                if pos[0] == 0 or self.is_obstacle_or_player(pos[0] - 1, pos[1]):
-                    return -1
-                pos -= 1
-                return 0
-            case 1: # right
-                if pos[1] == len(cols) - 1 or self.is_obstacle_or_player(pos[0], pos[1] + 1):
-                    return -1
-                pos[1] += 1
-                return 0
-            case 2: # down
-                if pos[0] == len(rows) - 1 or self.is_obstacle_or_player(pos[0] + 1, pos[1]):
-                    return -1
-                pos += 1
-                return 0
-            case 3: # left
-                if pos[1] == 0 or self.is_obstacle_or_player(pos[0], pos[1] - 1):
-                    return -1
-                pos -= 1
-                return 0
-            case _:
-                return -1 # Invalid move
+        r,c = self.player_positions[player]
+        deltas = {
+            UP: (-1, 0),
+            RIGHT: (0, 1),
+            DOWN: (1, 0),
+            LEFT: (0, -1)
+        }
+        if direction not in deltas:
+            return -1
+        dr, dc = deltas[direction]
+        nr, nc = r + dr, c + dc
+
+        if not (0 <= nr < self.rows and 0 <= nc < self.cols):
+            return -1
+        if self.is_obstacle_or_player((nr, nc)):
+            return -1
+
+        self.set_position((r, c), EMPTY)
+        self.set_position((nr, nc), PLAYER)
+        self.player_positions[player] = (nr, nc)
+        return 0
 
     def at_position(self, position: tuple) -> int:
         if position[0] < 0 or position[0] > self.rows - 1 or position[1] < 0 or position[1] > self.cols - 1:
-            raise Error(f"Invalid position")
+            return True
         return self.board[position[0]][position[1]]
 
     def is_obstacle_or_player(self, position: tuple) -> bool:
         if position[0] < 0 or position[0] > self.rows - 1 or position[1] < 0 or position[1] > self.cols - 1:
-            raise Error(f"Invalid position")
+            return True
         return self.at_position(position) == OBSTACLE or self.at_position(position) == PLAYER
 
     def place_obstacle(self, position: tuple) -> int:

@@ -13,9 +13,9 @@ def main():
     for i in range(10):
         a = c(heuristic_a, heuristic_b)
         if a == 0:
-            a += 1
+            a_wins += 1
         elif a == 1:
-            b += 1
+            b_wins += 1
 
 if __name__ == "__main__":
     main()
