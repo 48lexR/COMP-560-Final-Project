@@ -13,9 +13,13 @@ def main():
     for i in range(10):
         a = c(heuristic_a, heuristic_b)
         if a == 0:
-            a += 1
+            a_wins += 1
         elif a == 1:
-            b += 1
+            b_wins += 1
+    print("=== STATISTICS ===")
+    print(f"A W/L: {a_wins} / {b_wins}: {a_wins*100/(a_wins+b_wins)}%")
+    print(f"B W/L: {b_wins} / {a_wins}: {b_wins*100/(a_wins+b_wins)}%")
+    print("A wins" if a_wins > b_wins else "B wins")
 
 if __name__ == "__main__":
     main()
