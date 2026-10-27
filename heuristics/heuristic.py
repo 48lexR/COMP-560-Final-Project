@@ -39,5 +39,5 @@ class Heuristic:
         for key in deltas:
             dr, dc = deltas[key]
             if not model.is_obstacle_or_player((dr + r, dc + c)):
-                return (UP, (0, 0)) if player == 0 else (DOWN, (0, 0))
+                return (key, (0, 0))
         return (CREATE_OBSTACLE, (0, 0))
