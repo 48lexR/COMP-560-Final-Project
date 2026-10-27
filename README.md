@@ -2,6 +2,10 @@
 
 An A* heuristic search implementation for the game Quoridors.
 
+## Contributing
+
+Please add a `.py` file in `heuristics` that implements the following methods: `__init__` and `evalute(self, model, player)`. `evalute` should return a `tuple`, where the first element is a direction (`UP`, `DOWN`, `LEFT`, `RIGHT`, or `CREATE_OBSTACLE`) and a position (which is ignored for `UP`, `DOWN`, `LEFT`, and `RIGHT`, but used to place an `OBSTACLE` on the board.) 
+
 ## Implementation
 
 Model.py keeps track of the state of the board. It is agnostic to the state of the game (i.e. who is winning or losing) and it basically just tracks game metadata (like player and obstacle positions).
