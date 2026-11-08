@@ -3,6 +3,13 @@
 from model import UP, DOWN, LEFT, RIGHT, CREATE_OBSTACLE
 import heapq
 
+DELTAS = {
+    UP: (1, 0),
+    DOWN: (-1, 0),
+    LEFT: (0, -1),
+    RIGHT: (0, 1)
+}
+
 def min_tree_search(model, eval_func, depth):
     """Returns the move with the minimum evaluation overall"""
     # TODO: Missing game winning logic
@@ -20,7 +27,9 @@ def min_tree_search(model, eval_func, depth):
             _, _, e = max_tree_search(c, eval_func, depth-1)
             m = move
         elif move == CREATE_OBSTACLE:
-            positions = [(r, c) for r in range(model.rows) for c in range(model.cols)]
+            positions = [(r, c)
+                         for r in range(model.rows)
+                         for c in range(model.cols)]
             for p in positions:
                 if c.place_obsatcle(p) == 0:
                     _, _, e = max_tree_search(c, eval_func, depth-1)
@@ -78,16 +87,43 @@ def minimax_tree_search(model: any, eval_func: any, player: int, depth=1):
     return (move, pos)
 
 
-def tmp(model, player):
-    x, _ = model.get_player_position(player)
+def tmp(pos, player):
+    x, _ = pos
     if player == 0:
         return model.cols - x
     else:
         return x
 
+
+def pos_cmp(pos1, pos2, player):
+    return tmp(pos1, player) - tmp(pos1, player) > 0
+
+
 def a_star_shortest_path(model: any, player: int, h=tmp):
-    # TODO: Implement
     c = model.create_copy()
-    frontier = heapq()
-    seen = []
-    frontier.heappush(model.get_player_position(player))
+    start = c.get_player_position(player)
+
+    g_score = {start: 0}
+    frontier = [(h(c, start), 0, start)]
+
+    while frontier:
+        f, g, pos = heapq.heappop(frontier)
+
+        if g > g_score.get(pos, inf):
+            continue
+
+        if not tmp(pos, player):
+            return g
+
+        x, y = pos
+        for d in deltas:
+            dx, dy = deltas[d]
+            new_pos = (x + dx, y + dy)
+            if model.is_object_or_player(new_pos):
+                continue
+
+            new_g = g + 1
+            if new_g < g_score.get(new_pos, inf):
+                g_score[new_pos] = new_g
+                heapq.heappush(frontier, (new_g + h(c, new_pos), new_g, new_pos))
+    return -1

@@ -93,7 +93,6 @@ class Model:
         if kwargs['debug']:
             print(f"Move player {player} {direction} from {(r, c)} to {(nr, nc)}")
 
-
         if not (0 <= nr < self.rows and 0 <= nc < self.cols):
             return -1
         if self.is_obstacle_or_player((nr, nc)):
