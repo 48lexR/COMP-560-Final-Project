@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import copy
+
 EMPTY = 0
 PLAYER = 1
 OBSTACLE = 2
@@ -39,6 +41,15 @@ class Model:
         self.set_position(
             self.player_positions[1],
             PLAYER) # Initialize player 2 on the board
+
+    def create_copy(self):
+        """You won't believe what this one does"""
+        c = Model()
+        c.rows = self.rows
+        c.cols = self.cols
+        c.player_positions = copy.deepcopy(self.player_positions)
+        c.board = copy.deepcopy(self.board)
+        return c
 
     def __str__(self) -> str:
         """Returns a string summarizing the state of the board"""
