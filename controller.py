@@ -2,6 +2,7 @@
 
 from model import Model
 from heuristics.heuristic import Heuristic
+import time
 
 UP = 0
 RIGHT = 1
@@ -10,6 +11,7 @@ LEFT = 3
 PLACE_OBSTACLE = 4
 
 class Controller:
+    """The Controller class joins together the heuristics and the model."""
 
     model: Model
     state: int
@@ -33,8 +35,9 @@ class Controller:
             if a_move == False:
                 raise Exception(f"a_move: Invalid move.")
 
-            # print("\033[H\033[J", end="")
             print(self.model)
+            time.sleep(0.5)
+            print("\033[H\033[J", end="")
 
             if self.player_has_reached_goal(0):
                 self.state = 1
@@ -45,8 +48,9 @@ class Controller:
             if b_move == False:
                 raise Exception(f"b_move: invalid move")
 
-            # print("\033[H\033[J", end="")
             print(self.model)
+            time.sleep(0.5)
+            print("\033[H\033[J", end="") # Clears the console
 
             if self.player_has_reached_goal(1):
                 self.state = 1
