@@ -1,6 +1,6 @@
 # COMP-560-Final-Project
 
-An A* heuristic search implementation for the game Quoridors.
+A series of algorithms to model and 'solve' the game Quorodors.
 
 ## Implementation
 
@@ -13,3 +13,8 @@ All heuristics should go in the heuristics subfolder. I.e. your implementation o
 ## Game Rules
 
 When the game begins, both players begin in the center of the board. The goal is acheived when the maximizer (A) reaches the top row or the minimizer (B) reaches the bottom row, whichever happens first. 
+
+
+## Instructions for contributing
+
+Please create a new file in `heuristics/`. Next, please create a class inside this file (name doesn't matter.) Your class only needs to implement the `evaluate(self, model, player)` function so the controller can actually call your function. Everything else is up to you! Please, feel free to include `utils.py` for minimax, a* shortest path, and other utils. 
