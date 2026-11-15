@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
-from heuristics.heuristic import Heuristic
+from heuristics.minimax import Heuristic as Minimax
+from heuristics.random_player import Heuristic as Random
+from heuristics.greedy import Heuristic as Greedy
 from model import Model
 from controller import Controller
 
 def main():
-    num_iters = 10
-    heuristic_a = Heuristic()
-    heuristic_b = Heuristic()
-    c = Controller(3, 3)
+    num_iters = 50
+    heuristic_a = Minimax(depth=5)
+    heuristic_b = Greedy()
+    c = Controller(5, 5)
     a_wins = 0
     b_wins = 0
     for i in range(num_iters):

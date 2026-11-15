@@ -21,7 +21,7 @@ class Model:
     """
     rows: int
     cols: int
-    player_positions: list(tuple)
+    player_positions: list
     board: list
 
     def __init__(self, rows, cols):
