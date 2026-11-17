@@ -21,7 +21,7 @@ class Model:
     """
     rows: int
     cols: int
-    player_positions: list(tuple)
+    player_positions: list[tuple]
     board: list
 
     def __init__(self, rows, cols):
@@ -42,11 +42,12 @@ class Model:
             self.player_positions[1],
             PLAYER) # Initialize player 2 on the board
 
+
+        
+    
     def create_copy(self):
         """You won't believe what this one does"""
-        c = Model()
-        c.rows = self.rows
-        c.cols = self.cols
+        c = Model(self.rows, self.cols)
         c.player_positions = copy.deepcopy(self.player_positions)
         c.board = copy.deepcopy(self.board)
         return c

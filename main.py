@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 
 from heuristics.heuristic import Heuristic
+from heuristics.human import Human
+from heuristics.limitedwalls import Computer
+from heuristics.minimax import Heuristic as Minimax
 from model import Model
 from controller import Controller
 
 def main():
     num_iters = 10
-    heuristic_a = Heuristic()
-    heuristic_b = Heuristic()
-    c = Controller(3, 3)
+    heuristic_a = Human()
+    heuristic_b = Computer(tile_limit = 3*5//4)
+    #heuristic_a = Heuristic()
+    #heuristic_b = Heuristic()
+    c = Controller(5, 5)
     a_wins = 0
     b_wins = 0
     for i in range(num_iters):
