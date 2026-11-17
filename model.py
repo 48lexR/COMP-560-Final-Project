@@ -131,3 +131,19 @@ class Model:
         if player > len(self.player_positions):
             raise Error(f"Player {player} not valid in list of {len(self.player_positions)} players")
         return self.player_positions[player]
+
+    def player_has_valid_move(self, player):
+        valid_flag = False
+        # First check all available moves
+        r, c = self.get_player_position(player)
+        deltas = {
+            UP: (-1, 0),
+            RIGHT: (0, 1),
+            DOWN: (1, 0),
+            LEFT: (0, -1)
+        }
+        for key in deltas:
+            dr, dc = deltas[key]
+            if not self.is_obstacle_or_player((r + dr, c + dc)):
+                return True
+        return False

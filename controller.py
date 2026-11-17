@@ -35,27 +35,38 @@ class Controller:
             if a_move == False:
                 raise Exception(f"a_move: Invalid move.")
 
-            print(self.model)
-            time.sleep(0.5)
-            print("\033[H\033[J", end="")
+            if self.debug:
+                print(self.model)
+                time.sleep(0.5)
+                print("\033[H\033[J", end="")
 
             if self.player_has_reached_goal(0):
                 self.state = 1
                 print(f"Player 0 has won the game!")
                 return 0
+            elif not self.model.player_has_valid_move(1):
+                self.state = 1
+                print(f"it's a tie!")
+                return 2
 
             b_move = self.move_helper(heuristic_b, 1)
             if b_move == False:
                 raise Exception(f"b_move: invalid move")
 
-            print(self.model)
-            time.sleep(0.5)
-            print("\033[H\033[J", end="") # Clears the console
+            if self.debug:
+                print(self.model)
+                time.sleep(0.5)
+                print("\033[H\033[J", end="") # Clears the console
 
             if self.player_has_reached_goal(1):
                 self.state = 1
                 print(f"Player 1 has won the game!")
                 return 1
+            elif not self.model.player_has_valid_move(0):
+               self.state = 1
+               print(f"it's a tie!")
+               return 2
+
 
     def move_helper(self, heuristic, player):
         """Helper function to do the switch-cases"""
